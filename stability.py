@@ -1,7 +1,6 @@
 from utils import load_any_obj_pkl
 import matplotlib.pyplot as plt
 import numpy as np
-from sklearn.manifold import TSNE
 
 def load_OpenNE_Embedding(method, year):
     sid_emb = dict()
@@ -349,8 +348,8 @@ if __name__ == '__main__':
              '53f48051dabfae963d25973f', '53f4a6abdabfaedd74eb7df0']
     colors = ["red", "gold", "green", "cyan", "blue", "purple", "gray", "gray", "gray", "gray", ]
 
-    # danrl = load_any_obj_pkl("stability/2007_2016_embs_dim_2.pkl")
-    danrl = load_any_obj_pkl("stability/danrl_2007_2016_embs_dim_2.pkl")
+    danrl = load_any_obj_pkl("stability/2007_2016_embs_dim_2.pkl")
+    # danrl = load_any_obj_pkl("stability/danrl_2007_2016_embs_dim_2.pkl")
     deepwalk = load_any_obj_pkl("stability/deepwalk_2007_2016_embs_dim_2.pkl")
     tadw = load_any_obj_pkl("stability/tadw_2007_2016_embs_dim_2.pkl")
     # deepwalk = []
@@ -382,10 +381,6 @@ if __name__ == '__main__':
     danrl_plot()
     deepwalk_plot()
     tadw_plot()
-
-
-
-
 
     # for i in range(n_g):
     #     plt.subplot(2, 2, i+1)

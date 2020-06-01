@@ -8,10 +8,11 @@ import numpy as np
 import os, json
 import matplotlib.pyplot as plt
 
+
 def evaluation():
     G_dynamic_ori = load_any_obj_pkl("graph_data/collaborate_network(1G)/collaborate_network_2006_2016.pkl")
     G_dynamic = load_any_obj_pkl("graph_data/collaborate_network(2G)/collaborate_network_2007_2016.pkl")
-    method = "DynAttriWalks"
+    method = "DANRL"
     filepath = "parameter_sensitivity/collaborate_network(2G)/output"
     files = os.listdir(filepath)
 
@@ -78,6 +79,7 @@ def limit_para():
     plt.yticks(fontsize=tick_size)
     plt.ylim(0.22, 0.31)
     plt.legend(loc="upper right", fontsize=legend_size)
+    plt.tight_layout()
     plt.savefig("figure/limit参数敏感性.png")
     fig.savefig("figure/limit参数敏感性.eps", dpi=600, format='eps')
     plt.show()
@@ -112,6 +114,7 @@ def negative_sample():
     plt.yticks(fontsize=tick_size)
     # plt.ylim(0.23, 0.31)
     plt.legend(loc="upper right", fontsize=legend_size)
+    plt.tight_layout()
     plt.savefig("figure/neg参数敏感性.png")
     fig.savefig("figure/neg参数敏感性.eps", dpi=600, format='eps')
     plt.show()
@@ -146,6 +149,7 @@ def num_walk():
     plt.yticks(fontsize=tick_size)
     # plt.ylim(0.23, 0.31)
     plt.legend(loc="upper right", fontsize=legend_size)
+    plt.tight_layout()
     plt.savefig("figure/nWalk参数敏感性.png")
     fig.savefig("figure/nWalk参数敏感性.eps", dpi=600, format='eps')
     plt.show()
@@ -179,78 +183,9 @@ def length_walk():
     plt.yticks(fontsize=tick_size)
     # plt.ylim(0.19, 0.29)
     plt.legend(fontsize=legend_size)
+    plt.tight_layout()
     plt.savefig("figure/lWalk参数敏感性.png")
     fig.savefig("figure/lWalk参数敏感性.eps", dpi=600, format='eps')
-    plt.show()
-
-
-def window_size():
-    window = np.arange(2, 22, 2)
-    dim = [16, 32, 64, 128, 256, 512]
-
-    filepath = "parameter_sensitivity/collaborate_network(2G)/recommendation"
-    score = []
-    for p0 in window:
-        temp = []
-        for p1 in dim:
-            filename = "2007_2016_embs_window_" + str(int(p0)) + "_dim_" + str(int(p1)) + "_G_2ori.txt"
-            with open(os.path.join(filepath, filename), "r") as lines:
-                for line in lines:
-                    line_json = json.loads(line)
-                    # temp.append(line_json["top_5"])
-                    temp.append(np.mean(list(line_json.values())))
-        score.append(temp)
-    score = np.array(score).T
-
-    index = 0
-    fig = plt.figure()
-    plt.plot([int(n) for n in window], score[0], label="$d$=" + str(dim[0]), color=colors[index], marker=markers[index])
-    index += 1
-    for i in range(2, 5):
-        plt.plot([int(n) for n in window], score[i], label="$d$="+str(dim[i]), color=colors[index], marker=markers[index])
-        index += 1
-    plt.xlabel("$w$", fontdict={"size": label_size})  # label_size tick_size legend_size
-    plt.xticks(window, fontsize=tick_size)
-    plt.ylabel("average precision", fontdict={"size": label_size})
-    plt.yticks(fontsize=tick_size)
-    plt.ylim(0.15, 0.4)
-    plt.legend(fontsize=legend_size)
-    plt.savefig("figure/window参数敏感性.png")
-    fig.savefig("figure/window参数敏感性.eps", dpi=600, format='eps')
-    plt.show()
-
-
-def dim_para():
-    window = np.arange(2, 22, 2)
-    dim = [16, 32, 64, 128, 256, 512]
-
-    filepath = "parameter_sensitivity/collaborate_network(2G)/recommendation"
-    score = []
-    for p0 in dim:
-        temp = []
-        for p1 in window:
-            filename = "2007_2016_embs_window_" + str(int(p1)) + "_dim_" + str(int(p0)) + "_G_2ori.txt"
-            with open(os.path.join(filepath, filename), "r") as lines:
-                for line in lines:
-                    line_json = json.loads(line)
-                    # temp.append(line_json["top_5"])
-                    temp.append(np.mean(list(line_json.values())))
-        score.append(temp)
-    score = np.array(score).T
-
-    index = 0
-    fig = plt.figure()
-    for i in range(4):
-        plt.plot(np.arange(len(dim)), score[2*i+1], label="$w$="+str(window[2*i+1]), color=colors[index], marker=markers[index])
-        index += 1
-    plt.xlabel("$d$", fontdict={"size": label_size})  # label_size tick_size legend_size
-    plt.xticks(np.arange(len(dim)), [str(d) for d in dim], fontsize=tick_size)
-    plt.ylabel("average precision", fontdict={"size": label_size})
-    plt.yticks(fontsize=tick_size)
-    plt.ylim(0.15, 0.4)
-    plt.legend(fontsize=legend_size, loc="upper left")
-    plt.savefig("figure/dim参数敏感性.png")
-    fig.savefig("figure/dim参数敏感性.eps", dpi=600, format='eps')
     plt.show()
 
 
@@ -261,10 +196,8 @@ if __name__ == '__main__':
     colors = ["red", "gold", "green", "cyan", "blue", "purple"]
     markers = ["o", "v", "^", "<", ">", "x"]
 
-    # evaluation()
-    # limit_para()
-    # negative_sample()
-    # num_walk()
-    # length_walk()
-    # window_size()
-    dim_para()
+    evaluation()
+    limit_para()
+    negative_sample()
+    num_walk()
+    length_walk()

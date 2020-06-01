@@ -8,7 +8,7 @@ import os
 import json
 
 filepath = "evaluation_result/collaborate_network(2G)/recommendation"
-methods = ["DynAttriWalks", "DeepWalk", "TADW", "CommonNeighbor"]
+methods = ["DANRL", "DeepWalk", "TADW", "CommonNeighbor"]
 colors = ["r", "b", "m", "g"]
 markers = ["o", "x", "D", "^"]
 score = []
